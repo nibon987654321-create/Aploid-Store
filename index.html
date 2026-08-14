@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aploid Store - অ্যাপ ডাউনলোড স্টোর</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f3f4f6;
+        }
+        .app-card {
+            transition: all 0.3s ease;
+        }
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .icon-gradient-1 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .icon-gradient-2 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .icon-gradient-3 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .icon-gradient-4 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .icon-gradient-5 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+        .icon-gradient-6 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
+        .icon-gradient-7 { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+        .icon-gradient-8 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+        
+        .icon-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-animation {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- নেভিগেশন বার -->
+    <nav class="gradient-bg text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-lg">
+                    <span class="text-indigo-600 font-bold text-2xl">A</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-wide">Aploid Store</h1>
+                    <p class="text-xs text-indigo-200 hidden sm:block">আপনার পছন্দের অ্যাপের ঠিকানা</p>
+                </div>
+            </div>
+            <div class="w-full sm:w-auto">
+                <input type="text" id="searchBar" placeholder="🔍 অ্যাপের নাম খুঁজুন..." 
+                       class="w-full sm:w-80 px-4 py-2.5 rounded-xl text-black bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300 shadow-md">
+            </div>
+        </div>
+    </nav>
+
+    <!-- ক্যাটাগরি ফিল্টার -->
+    <div class="container mx-auto mt-6 px-4">
+        <div class="flex gap-3 overflow-x-auto pb-3 scroll-smooth">
+            <button onclick="filterCategory('All')" class="gradient-bg text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all shrink-0">📱 সব অ্যাপ</button>
+            <button onclick="filterCategory('Games')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">🎮 গেমস</button>
+            <button onclick="filterCategory('Tools')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">🔧 টুলস</button>
+            <button onclick="filterCategory('Social')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">💬 সোশ্যাল</button>
+            <button onclick="filterCategory('Education')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">📚 শিক্ষা</button>
+            <button onclick="filterCategory('Entertainment')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">🎬 বিনোদন</button>
+        </div>
+    </div>
+
+    <!-- অ্যাপ গ্রিড -->
+    <main class="container mx-auto px-4 py-6">
+        <div id="appContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+        </div>
+    </main>
+
+    <!-- মডাল -->
+    <div id="appModal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center p-4 z-50 modal-backdrop">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl relative modal-animation overflow-hidden">
+            <div class="gradient-bg h-24"></div>
+            <div class="px-6 pb-6 relative">
+                <button onclick="closeModal()" class="absolute top-3 right-4 text-white hover:text-gray-200 text-3xl font-bold z-10">&times;</button>
+                <div class="flex items-end gap-4 -mt-12">
+                    <div id="modalIconContainer" class="w-24 h-24 rounded-2xl shadow-xl flex items-center justify-center border-4 border-white">
+                        <span id="modalIconText" class="icon-text">A</span>
+                    </div>
+                    <div class="pb-1">
+                        <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
+                        <p id="modalCategory" class="text-sm text-indigo-500 font-semibold mt-1"></p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <p id="modalDesc" class="text-gray-600 leading-relaxed"></p>
+                </div>
+                <div class="mt-6 space-y-3">
+                    <a id="modalDownload" href="#" target="_blank" 
+                       class="block text-center bg-green-500 text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-all shadow-lg hover:shadow-xl">
+                       📥 ডাউনলোড করুন
+                    </a>
+                    <button onclick="closeModal()" 
+                            class="block text-center bg-gray-200 text-gray-700 font-medium py-2.5 rounded-xl hover:bg-gray-300 transition-all w-full">
+                        বন্ধ করুন
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ফুটার -->
+    <footer class="bg-white border-t border-gray-200 mt-8 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
+            <p>© 2026 Aploid Store. সব অধিকার সংরক্ষিত।</p>
+            <p class="text-xs text-gray-400 mt-1">মোট অ্যাপ: <span id="totalApps">0</span>টি</p>
+        </div>
+    </footer>
+
+    <script>
+        // =====================================================
+        // 📱 এখানে আপনার সব অ্যাপ যোগ করুন
+        // =====================================================
+        const appsData = [
+            // ===== গেমস =====
+            {
+                id: 1,
+                title: "Subway Surfers",
+                category: "Games",
+                desc: "একটি জনপ্রিয় অন্তহীন দৌড়ের গেম। ট্রেন এবং বাধা এড়িয়ে সর্বোচ্চ স্কোর করুন।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf",
+                gradient: "icon-gradient-1"
+            },
+            {
+                id: 2,
+                title: "Candy Crush",
+                category: "Games",
+                desc: "মজাদার কালারফুল পাজল গেম। ক্যান্ডি ম্যাচ করুন এবং নতুন লেভেল আনলক করুন!",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.king.candycrushsaga",
+                gradient: "icon-gradient-6"
+            },
+            {
+                id: 3,
+                title: "Free Fire",
+                category: "Games",
+                desc: "একটি অ্যাকশন-প্যাকড ব্যাটল রয়্যাল গেম। ৫০ জন খেলোয়াড়ের মধ্যে শেষ একজন বেঁচে থাকুন।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.dts.freefireth",
+                gradient: "icon-gradient-3"
+            },
+            {
+                id: 4,
+                title: "PUBG Mobile",
+                category: "Games",
+                desc: "বিশ্বের সবচেয়ে জনপ্রিয় ব্যাটল রয়্যাল গেম। ১০০ জন খেলোয়াড়ের মধ্যে শেষ একজন বেঁচে থাকুন।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.tencent.ig",
+                gradient: "icon-gradient-7"
+            },
+
+            // ===== টুলস =====
+            {
+                id: 5,
+                title: "Gallery App",
+                category: "Tools",
+                desc: "আমার তৈরি গ্যালারী অ্যাপ। ছবি দেখুন, এডিট করুন ও শেয়ার করুন।",
+                downloadUrl: "https://www.mediafire.com/file/ts5x91z64w0zu2k/Gallery.apk/file",
+                gradient: "icon-gradient-2"
+            },
+            {
+                id: 6,
+                title: "Google A",
+                category: "Tools",
+                desc: "Google A - আপনার ব্যক্তিগত সহায়ক অ্যাপ। দ্রুত সার্চ, ভয়েস কমান্ড ও আরও অনেক কিছু।",
+                downloadUrl: "https://www.mediafire.com/file/cwl4bfsnpffspky/Google_A_2.0.0.apk/file",
+                gradient: "icon-gradient-5"
+            },
+            {
+                id: 7,
+                title: "Calculator",
+                category: "Tools",
+                desc: "সাধারণ থেকে বৈজ্ঞানিক জটিল ক্যালকুলেশন সম্পন্ন করুন এক নিমেষেই।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.google.android.calculator",
+                gradient: "icon-gradient-4"
+            },
+            {
+                id: 8,
+                title: "Microsoft Office",
+                category: "Tools",
+                desc: "Word, Excel, PowerPoint সব একসাথে। ডকুমেন্ট তৈরি, এডিট ও শেয়ার করুন।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.microsoft.office.officehubrow",
+                gradient: "icon-gradient-7"
+            },
+            {
+                id: 9,
+                title: "PLAYit PRO",
+                category: "Tools",
+                desc: "সেরা অল-ইন-ওয়ান ভিডিও ও মিউজিক প্লেয়ার। যেকোনো ফরম্যাটের ফাইল ও অনলাইন ডাউনলোডার।",
+                downloadUrl: "https://www.mediafire.com/file/y44c06w824rl2i3/PLAYit_PRO.apk/file",
+                gradient: "icon-gradient-8"
+            },
+
+            // ===== সোশ্যাল =====
+            {
+                id: 10,
+                title: "WhatsApp",
+                category: "Social",
+                desc: "বিশ্বের সবচেয়ে জনপ্রিয় মেসেজিং অ্যাপ। সহজে যোগাযোগ রাখুন প্রিয়জনদের সাথে।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.whatsapp",
+                gradient: "icon-gradient-8"
+            },
+            {
+                id: 11,
+                title: "Instagram",
+                category: "Social",
+                desc: "ফটো ও ভিডিও শেয়ার করার জনপ্রিয় সোশ্যাল মিডিয়া প্ল্যাটফর্ম। রিলস, স্টোরি ও লাইভ।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.instagram.android",
+                gradient: "icon-gradient-1"
+            },
+            {
+                id: 12,
+                title: "Telegram",
+                category: "Social",
+                desc: "বন্ধুদের সাথে দ্রুত এবং নিরাপদ উপায়ে চ্যাট, ভয়েস কল ও ভিডিও কল করার সেরা অ্যাপ।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=org.telegram.messenger",
+                gradient: "icon-gradient-3"
+            },
+            {
+                id: 13,
+                title: "Facebook",
+                category: "Social",
+                desc: "বিশ্বের সবচেয়ে বড় সোশ্যাল নেটওয়ার্ক। বন্ধুদের সাথে সংযুক্ত থাকুন।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.facebook.katana",
+                gradient: "icon-gradient-4"
+            },
+            {
+                id: 14,
+                title: "TikTok",
+                category: "Social",
+                desc: "শর্ট ভিডিও তৈরির জনপ্রিয় প্ল্যাটফর্ম। নিজের ক্রিয়েটিভিটি দেখান বিশ্বের কাছে।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically",
+                gradient: "icon-gradient-2"
+            },
+
+            // ===== শিক্ষা =====
+            {
+                id: 15,
+                title: "Duolingo",
+                category: "Education",
+                desc: "৩০টির বেশি ভাষা শেখার মজাদার অ্যাপ। গেমিফাইড লার্নিং পদ্ধতি।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.duolingo",
+                gradient: "icon-gradient-5"
+            },
+            {
+                id: 16,
+                title: "Khan Academy",
+                category: "Education",
+                desc: "বিনামূল্যে অনলাইন শিক্ষা। গণিত, বিজ্ঞান, প্রোগ্রামিং সহ সব বিষয়।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=org.khanacademy.android",
+                gradient: "icon-gradient-6"
+            },
+            {
+                id: 17,
+                title: "Google Classroom",
+                category: "Education",
+                desc: "অনলাইন ক্লাস পরিচালনার টুল। শিক্ষক ও শিক্ষার্থীদের জন্য সেরা প্ল্যাটফর্ম।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.google.android.apps.classroom",
+                gradient: "icon-gradient-7"
+            },
+
+            // ===== বিনোদন =====
+            {
+                id: 18,
+                title: "Spotify",
+                category: "Entertainment",
+                desc: "গান শোনার সেরা অ্যাপ। মিলিয়ন গানের সংগ্রহ আপনার হাতের মুঠোয়।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.spotify.music",
+                gradient: "icon-gradient-7"
+            },
+            {
+                id: 19,
+                title: "YouTube",
+                category: "Entertainment",
+                desc: "ভিডিও দেখার সবচেয়ে বড় প্ল্যাটফর্ম। গান, মুভি, টিউটোরিয়াল সব কিছু দেখুন।",
+                downloadUrl: "https://play.google.com/store/apps/details?id=com.google.android.youtube",
+                gradient: "icon-gradient-8"
+            },
+            {
+                id: 20,
+                title: "Snaptube Pro",
+                category: "Entertainment",
+                desc: "সব ফরম্যাটের এইচডি ভিডিও প্লেয়ার। এক অ্যাপেই অফলাইন ভিডিও দেখা ও ডাউনলোডের সেরা মাধ্যম।",
+                downloadUrl: "https://www.mediafire.com/file/84mhbfw3ezxx6b5/Snaptube_M0D_v4.apk/file",
+                gradient: "icon-gradient-1"
+            }
+        ];
+
+        // =====================================================
+        // 🛠️ এই অংশ পরিবর্তন করার দরকার নেই
+        // =====================================================
+        const appContainer = document.getElementById('appContainer');
+        const searchBar = document.getElementById('searchBar');
+        const totalAppsSpan = document.getElementById('totalApps');
+
+        function getInitials(title) {
+            return title.charAt(0).toUpperCase();
+        }
+
+        function displayApps(apps) {
+            appContainer.innerHTML = "";
+            totalAppsSpan.textContent = apps.length;
+            
+            if(apps.length === 0) {
+                appContainer.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-6xl mb-4">🔍</div>
+                        <h3 class="text-xl font-semibold text-gray-600">কোনো অ্যাপ পাওয়া যায়নি!</h3>
+                        <p class="text-gray-400 mt-2">অন্য কোনো নাম দিয়ে খুঁজুন</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            apps.forEach(app => {
+                const initial = getInitials(app.title);
+                const appCard = `
+                    <div onclick="openModal(${app.id})" class="app-card bg-white p-4 rounded-2xl shadow-md hover:shadow-xl cursor-pointer flex flex-col items-center text-center">
+                        <div class="w-20 h-20 rounded-2xl flex items-center justify-center shadow-md ${app.gradient}">
+                            <span class="icon-text">${initial}</span>
+                        </div>
+                        <h2 class="font-bold text-gray-800 text-sm md:text-base mt-3 line-clamp-1 w-full">${app.title}</h2>
+                        <span class="text-xs text-gray-400 mt-1 bg-gray-100 px-3 py-1 rounded-full">${app.category}</span>
+                    </div>
+                `;
+                appContainer.innerHTML += appCard;
+            });
+        }
+
+        searchBar.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            if(searchTerm === '') {
+                displayApps(appsData);
+            } else {
+                const filteredApps = appsData.filter(app => 
+                    app.title.toLowerCase().includes(searchTerm) ||
+                    app.category.toLowerCase().includes(searchTerm)
+                );
+                displayApps(filteredApps);
+            }
+        });
+
+        function filterCategory(category) {
+            if(category === 'All') {
+                displayApps(appsData);
+                searchBar.value = '';
+            } else {
+                const filteredApps = appsData.filter(app => app.category === category);
+                displayApps(filteredApps);
+                searchBar.value = '';
+            }
+        }
+
+        function openModal(id) {
+            const app = appsData.find(a => a.id === id);
+            if(!app) return;
+
+            document.getElementById('modalTitle').innerText = app.title;
+            document.getElementById('modalCategory').innerText = `📂 ${app.category}`;
+            document.getElementById('modalDesc').innerText = app.desc;
+            document.getElementById('modalDownload').href = app.downloadUrl;
+            
+            const iconContainer = document.getElementById('modalIconContainer');
+            iconContainer.className = `w-24 h-24 rounded-2xl shadow-xl flex items-center justify-center border-4 border-white ${app.gradient}`;
+            document.getElementById('modalIconText').innerText = getInitials(app.title);
+
+            document.getElementById('appModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('appModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('appModal').addEventListener('click', function(e) {
+            if(e.target === this) closeModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if(e.key === 'Escape') closeModal();
+        });
+
+        displayApps(appsData);
+    </script>
+
+</body>
+</html>
