@@ -1,406 +1,412 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aploid Store - অ্যাপ ডাউনলোড স্টোর</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>X9 Aploid Store - প্রিমিয়াম অ্যাপ স্টোর</title>
+
+    <!-- SEO & Security Meta Tags -->
+    <meta name="description" content="X9 Aploid Store - সেরা Android অ্যাপ ও গেমস ডাউনলোড করুন নিরাপদে" />
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Content Security Policy (CSP) -->
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' https://cdn.tailwindcss.com; 
+                   style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; 
+                   img-src 'self' data: https://via.placeholder.com; 
+                   font-src 'self' data:; 
+                   connect-src 'self'; 
+                   frame-ancestors 'none'; 
+                   base-uri 'self'; 
+                   form-action 'self'" />
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
+        /* ============================================================
+           আধুনিক ডিজাইন - X9 Aploid Store
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f3f4f6;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
         }
+
+        /* X9 স্পেশাল গ্রেডিয়েন্ট */
+        .x9-gradient {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff3366 25%, #ff00ff 50%, #7c3aed 75%, #4f46e5 100%);
+            background-size: 300% 300%;
+            animation: x9Gradient 4s ease-in-out infinite;
+        }
+
+        @keyframes x9Gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* X9 টেক্সট ইফেক্ট */
+        .x9-text {
+            background: linear-gradient(135deg, #ff6b6b, #ff3366, #ff00ff, #7c3aed, #4f46e5);
+            background-size: 300% 300%;
+            animation: x9Gradient 4s ease-in-out infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* গ্লাসমরফিজম */
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* X9 কার্ড স্টাইল */
         .app-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 1.25rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, #ff6b6b, #ff00ff, #4f46e5);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .app-card:hover::before {
+            opacity: 1;
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            border-color: transparent;
+            box-shadow: 0 30px 60px -15px rgba(255, 0, 255, 0.3), 0 0 40px -10px rgba(255, 51, 102, 0.2);
+        }
+
+        /* X9 আইকন */
+        .app-icon-wrapper {
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 700;
+            color: #fff;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(255, 0, 255, 0.25);
+            background: linear-gradient(135deg, #ff6b6b, #ff00ff);
+        }
+
+        .app-card:hover .app-icon-wrapper {
+            transform: scale(1.08) rotate(-3deg);
+            box-shadow: 0 12px 48px rgba(255, 0, 255, 0.4);
+        }
+
+        /* X9 মডাল */
+        .modal-glass {
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+        }
+
+        /* X9 বাটন */
+        .x9-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff3366, #ff00ff, #7c3aed);
+            background-size: 300% 300%;
+            animation: x9Gradient 4s ease-in-out infinite;
             transition: all 0.3s ease;
         }
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+
+        .x9-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 40px rgba(255, 0, 255, 0.4);
         }
-        .modal-backdrop {
-            backdrop-filter: blur(4px);
+
+        /* লোগো এক্সট্রা গ্লো */
+        .x9-logo-glow {
+            box-shadow: 0 0 40px rgba(255, 0, 255, 0.3), 0 0 80px rgba(255, 51, 102, 0.15);
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .icon-gradient-1 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .icon-gradient-2 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .icon-gradient-3 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .icon-gradient-4 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .icon-gradient-5 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
-        .icon-gradient-6 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
-        .icon-gradient-7 { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
-        .icon-gradient-8 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
-        
-        .icon-text {
-            font-size: 32px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .modal-animation {
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
+
+        /* স্ক্রলবার */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
         ::-webkit-scrollbar-thumb {
-            background: #888;
+            background: linear-gradient(135deg, #ff6b6b, #ff00ff);
             border-radius: 10px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .app-card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @media (max-width: 640px) {
+            .app-icon-wrapper { width: 60px; height: 60px; font-size: 24px; }
+            .app-card { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- নেভিগেশন বার -->
-    <nav class="gradient-bg text-white p-4 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+    <!-- ===== X9 নেভিগেশন ===== -->
+    <nav class="glass-dark fixed top-0 left-0 right-0 z-50 border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-lg">
-                    <span class="text-indigo-600 font-bold text-2xl">A</span>
+                <!-- X9 লোগো -->
+                <div class="w-11 h-11 rounded-xl x9-gradient flex items-center justify-center x9-logo-glow">
+                    <span class="text-white font-extrabold text-lg tracking-tight">X9</span>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold tracking-wide">Aploid Store</h1>
-                    <p class="text-xs text-indigo-200 hidden sm:block">আপনার পছন্দের অ্যাপের ঠিকানা</p>
+                    <h1 class="text-xl font-extrabold tracking-tight x9-text">
+                        X9 Aploid Store
+                    </h1>
+                    <p class="text-[10px] text-gray-400 hidden sm:block">⚡ প্রিমিয়াম সিকিউর অ্যাপ স্টোর</p>
                 </div>
             </div>
-            <div class="w-full sm:w-auto">
-                <input type="text" id="searchBar" placeholder="🔍 অ্যাপের নাম খুঁজুন..." 
-                       class="w-full sm:w-80 px-4 py-2.5 rounded-xl text-black bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300 shadow-md">
+            <div class="w-full sm:w-auto relative">
+                <input type="text" id="searchBar" placeholder="🔍 X9 অ্যাপ খুঁজুন..." 
+                       class="w-full sm:w-72 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-transparent transition-all" />
             </div>
         </div>
     </nav>
 
-    <!-- ক্যাটাগরি ফিল্টার -->
-    <div class="container mx-auto mt-6 px-4">
-        <div class="flex gap-3 overflow-x-auto pb-3 scroll-smooth">
-            <button onclick="filterCategory('All')" class="gradient-bg text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all shrink-0">📱 সব অ্যাপ</button>
-            <button onclick="filterCategory('Games')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">🎮 গেমস</button>
-            <button onclick="filterCategory('Tools')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">🔧 টুলস</button>
-            <button onclick="filterCategory('Social')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">💬 সোশ্যাল</button>
-            <button onclick="filterCategory('Education')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">📚 শিক্ষা</button>
-            <button onclick="filterCategory('Entertainment')" class="bg-white text-gray-700 px-6 py-2.5 rounded-full font-medium shadow hover:shadow-lg hover:bg-gray-50 transition-all shrink-0">🎬 বিনোদন</button>
+    <!-- ===== X9 ক্যাটাগরি ===== -->
+    <div class="pt-20 pb-4 max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex gap-2 overflow-x-auto pb-2 scroll-smooth no-scrollbar">
+            <button onclick="filterCategory('All')" class="x9-gradient text-white px-5 py-2 rounded-full text-sm font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all shrink-0">
+                📱 X9 সব
+            </button>
+            <button onclick="filterCategory('Games')" class="glass text-gray-300 hover:text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition-all shrink-0">
+                🎮 গেমস
+            </button>
+            <button onclick="filterCategory('Tools')" class="glass text-gray-300 hover:text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition-all shrink-0">
+                🔧 টুলস
+            </button>
+            <button onclick="filterCategory('Social')" class="glass text-gray-300 hover:text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition-all shrink-0">
+                💬 সোশ্যাল
+            </button>
+            <button onclick="filterCategory('Education')" class="glass text-gray-300 hover:text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition-all shrink-0">
+                📚 শিক্ষা
+            </button>
+            <button onclick="filterCategory('Entertainment')" class="glass text-gray-300 hover:text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition-all shrink-0">
+                🎬 বিনোদন
+            </button>
         </div>
     </div>
 
-    <!-- অ্যাপ গ্রিড -->
-    <main class="container mx-auto px-4 py-6">
-        <div id="appContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+    <!-- ===== X9 অ্যাপ গ্রিড ===== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-12">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold text-gray-300">
+                🔥 X9 জনপ্রিয় অ্যাপসমূহ
+                <span class="text-sm font-normal text-gray-500 ml-2" id="totalApps">0</span>
+            </h2>
+        </div>
+        <div id="appContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         </div>
     </main>
 
-    <!-- মডাল -->
-    <div id="appModal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center p-4 z-50 modal-backdrop">
-        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl relative modal-animation overflow-hidden">
-            <div class="gradient-bg h-24"></div>
-            <div class="px-6 pb-6 relative">
-                <button onclick="closeModal()" class="absolute top-3 right-4 text-white hover:text-gray-200 text-3xl font-bold z-10">&times;</button>
-                <div class="flex items-end gap-4 -mt-12">
-                    <div id="modalIconContainer" class="w-24 h-24 rounded-2xl shadow-xl flex items-center justify-center border-4 border-white">
-                        <span id="modalIconText" class="icon-text">A</span>
-                    </div>
-                    <div class="pb-1">
-                        <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
-                        <p id="modalCategory" class="text-sm text-indigo-500 font-semibold mt-1"></p>
-                    </div>
+    <!-- ===== X9 মডাল ===== -->
+    <div id="appModal" class="fixed inset-0 modal-glass hidden flex items-center justify-center p-4 z-50">
+        <div class="glass-dark rounded-2xl max-w-md w-full p-6 relative border border-white/10 animate-[fadeInUp_0.3s_ease]">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl transition">&times;</button>
+            <div class="flex items-center gap-4">
+                <div id="modalIconContainer" class="w-20 h-20 rounded-2xl flex items-center justify-center text-3xl font-bold text-white shadow-lg shadow-pink-500/20">
+                    <span id="modalIconText">X9</span>
                 </div>
-                <div class="mt-4">
-                    <p id="modalDesc" class="text-gray-600 leading-relaxed"></p>
-                </div>
-                <div class="mt-6 space-y-3">
-                    <a id="modalDownload" href="#" target="_blank" 
-                       class="block text-center bg-green-500 text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-all shadow-lg hover:shadow-xl">
-                       📥 ডাউনলোড করুন
-                    </a>
-                    <button onclick="closeModal()" 
-                            class="block text-center bg-gray-200 text-gray-700 font-medium py-2.5 rounded-xl hover:bg-gray-300 transition-all w-full">
-                        বন্ধ করুন
-                    </button>
+                <div>
+                    <h3 id="modalTitle" class="text-xl font-bold x9-text"></h3>
+                    <p id="modalCategory" class="text-sm text-pink-400"></p>
                 </div>
             </div>
+            <p id="modalDesc" class="text-gray-300 text-sm leading-relaxed mt-4"></p>
+            <a id="modalDownload" href="#" target="_blank" 
+               class="mt-5 block text-center x9-gradient text-white font-semibold py-3 rounded-xl hover:shadow-lg hover:shadow-pink-500/25 transition-all">
+               ⚡ X9 ডাউনলোড করুন
+            </a>
         </div>
     </div>
 
-    <!-- ফুটার -->
-    <footer class="bg-white border-t border-gray-200 mt-8 py-6">
-        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
-            <p>© 2026 Aploid Store. সব অধিকার সংরক্ষিত।</p>
-            <p class="text-xs text-gray-400 mt-1">মোট অ্যাপ: <span id="totalApps">0</span>টি</p>
-        </div>
+    <!-- ===== X9 ফুটার ===== -->
+    <footer class="border-t border-white/5 py-6 text-center text-gray-500 text-xs">
+        <p>⚡ X9 Aploid Store © 2026 · সুরক্ষিত প্রিমিয়াম সংস্করণ</p>
     </footer>
 
     <script>
-        // =====================================================
-        // 📱 এখানে আপনার সব অ্যাপ যোগ করুন
-        // =====================================================
+        // ============================================================
+        // 🔒 X9 সিকিউরিটি সিস্টেম
+        // ============================================================
+        (function() {
+            // console.log ব্লক
+            const originalLog = console.log;
+            console.log = function() {
+                if (window.location.hostname !== 'localhost' && !window.location.hostname.includes('render.com')) {
+                    return;
+                }
+                originalLog.apply(console, arguments);
+            };
+
+            // Cookie সুরক্ষা
+            Object.defineProperty(document, 'cookie', {
+                get: function() { return ''; },
+                set: function() { return; }
+            });
+
+            // ডেভেলপার টুলস ব্লক
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                    (e.ctrlKey && e.key === 'U')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // রাইট ক্লিক ব্লক
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            console.log('%c⚡ X9 Aploid Store - প্রিমিয়াম সুরক্ষিত', 'font-size:20px; font-weight:bold; color:#ff6b6b;');
+        })();
+
+        // ============================================================
+        // 📱 X9 অ্যাপ ডাটা
+        // ============================================================
         const appsData = [
-            // ===== গেমস =====
-            {
-                id: 1,
-                title: "Subway Surfers",
-                category: "Games",
-                desc: "একটি জনপ্রিয় অন্তহীন দৌড়ের গেম। ট্রেন এবং বাধা এড়িয়ে সর্বোচ্চ স্কোর করুন।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf",
-                gradient: "icon-gradient-1"
-            },
-            {
-                id: 2,
-                title: "Candy Crush",
-                category: "Games",
-                desc: "মজাদার কালারফুল পাজল গেম। ক্যান্ডি ম্যাচ করুন এবং নতুন লেভেল আনলক করুন!",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.king.candycrushsaga",
-                gradient: "icon-gradient-6"
-            },
-            {
-                id: 3,
-                title: "Free Fire",
-                category: "Games",
-                desc: "একটি অ্যাকশন-প্যাকড ব্যাটল রয়্যাল গেম। ৫০ জন খেলোয়াড়ের মধ্যে শেষ একজন বেঁচে থাকুন।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.dts.freefireth",
-                gradient: "icon-gradient-3"
-            },
-            {
-                id: 4,
-                title: "PUBG Mobile",
-                category: "Games",
-                desc: "বিশ্বের সবচেয়ে জনপ্রিয় ব্যাটল রয়্যাল গেম। ১০০ জন খেলোয়াড়ের মধ্যে শেষ একজন বেঁচে থাকুন।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.tencent.ig",
-                gradient: "icon-gradient-7"
-            },
-
-            // ===== টুলস =====
-            {
-                id: 5,
-                title: "Gallery App",
-                category: "Tools",
-                desc: "আমার তৈরি গ্যালারী অ্যাপ। ছবি দেখুন, এডিট করুন ও শেয়ার করুন।",
-                downloadUrl: "https://www.mediafire.com/file/ts5x91z64w0zu2k/Gallery.apk/file",
-                gradient: "icon-gradient-2"
-            },
-            {
-                id: 6,
-                title: "Google A",
-                category: "Tools",
-                desc: "Google A - আপনার ব্যক্তিগত সহায়ক অ্যাপ। দ্রুত সার্চ, ভয়েস কমান্ড ও আরও অনেক কিছু।",
-                downloadUrl: "https://www.mediafire.com/file/cwl4bfsnpffspky/Google_A_2.0.0.apk/file",
-                gradient: "icon-gradient-5"
-            },
-            {
-                id: 7,
-                title: "Calculator",
-                category: "Tools",
-                desc: "সাধারণ থেকে বৈজ্ঞানিক জটিল ক্যালকুলেশন সম্পন্ন করুন এক নিমেষেই।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.google.android.calculator",
-                gradient: "icon-gradient-4"
-            },
-            {
-                id: 8,
-                title: "Microsoft Office",
-                category: "Tools",
-                desc: "Word, Excel, PowerPoint সব একসাথে। ডকুমেন্ট তৈরি, এডিট ও শেয়ার করুন।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.microsoft.office.officehubrow",
-                gradient: "icon-gradient-7"
-            },
-            {
-                id: 9,
-                title: "PLAYit PRO",
-                category: "Tools",
-                desc: "সেরা অল-ইন-ওয়ান ভিডিও ও মিউজিক প্লেয়ার। যেকোনো ফরম্যাটের ফাইল ও অনলাইন ডাউনলোডার।",
-                downloadUrl: "https://www.mediafire.com/file/y44c06w824rl2i3/PLAYit_PRO.apk/file",
-                gradient: "icon-gradient-8"
-            },
-
-            // ===== সোশ্যাল =====
-            {
-                id: 10,
-                title: "WhatsApp",
-                category: "Social",
-                desc: "বিশ্বের সবচেয়ে জনপ্রিয় মেসেজিং অ্যাপ। সহজে যোগাযোগ রাখুন প্রিয়জনদের সাথে।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.whatsapp",
-                gradient: "icon-gradient-8"
-            },
-            {
-                id: 11,
-                title: "Instagram",
-                category: "Social",
-                desc: "ফটো ও ভিডিও শেয়ার করার জনপ্রিয় সোশ্যাল মিডিয়া প্ল্যাটফর্ম। রিলস, স্টোরি ও লাইভ।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.instagram.android",
-                gradient: "icon-gradient-1"
-            },
-            {
-                id: 12,
-                title: "Telegram",
-                category: "Social",
-                desc: "বন্ধুদের সাথে দ্রুত এবং নিরাপদ উপায়ে চ্যাট, ভয়েস কল ও ভিডিও কল করার সেরা অ্যাপ।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=org.telegram.messenger",
-                gradient: "icon-gradient-3"
-            },
-            {
-                id: 13,
-                title: "Facebook",
-                category: "Social",
-                desc: "বিশ্বের সবচেয়ে বড় সোশ্যাল নেটওয়ার্ক। বন্ধুদের সাথে সংযুক্ত থাকুন।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.facebook.katana",
-                gradient: "icon-gradient-4"
-            },
-            {
-                id: 14,
-                title: "TikTok",
-                category: "Social",
-                desc: "শর্ট ভিডিও তৈরির জনপ্রিয় প্ল্যাটফর্ম। নিজের ক্রিয়েটিভিটি দেখান বিশ্বের কাছে।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically",
-                gradient: "icon-gradient-2"
-            },
-
-            // ===== শিক্ষা =====
-            {
-                id: 15,
-                title: "Duolingo",
-                category: "Education",
-                desc: "৩০টির বেশি ভাষা শেখার মজাদার অ্যাপ। গেমিফাইড লার্নিং পদ্ধতি।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.duolingo",
-                gradient: "icon-gradient-5"
-            },
-            {
-                id: 16,
-                title: "Khan Academy",
-                category: "Education",
-                desc: "বিনামূল্যে অনলাইন শিক্ষা। গণিত, বিজ্ঞান, প্রোগ্রামিং সহ সব বিষয়।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=org.khanacademy.android",
-                gradient: "icon-gradient-6"
-            },
-            {
-                id: 17,
-                title: "Google Classroom",
-                category: "Education",
-                desc: "অনলাইন ক্লাস পরিচালনার টুল। শিক্ষক ও শিক্ষার্থীদের জন্য সেরা প্ল্যাটফর্ম।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.google.android.apps.classroom",
-                gradient: "icon-gradient-7"
-            },
-
-            // ===== বিনোদন =====
-            {
-                id: 18,
-                title: "Spotify",
-                category: "Entertainment",
-                desc: "গান শোনার সেরা অ্যাপ। মিলিয়ন গানের সংগ্রহ আপনার হাতের মুঠোয়।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.spotify.music",
-                gradient: "icon-gradient-7"
-            },
-            {
-                id: 19,
-                title: "YouTube",
-                category: "Entertainment",
-                desc: "ভিডিও দেখার সবচেয়ে বড় প্ল্যাটফর্ম। গান, মুভি, টিউটোরিয়াল সব কিছু দেখুন।",
-                downloadUrl: "https://play.google.com/store/apps/details?id=com.google.android.youtube",
-                gradient: "icon-gradient-8"
-            },
-            {
-                id: 20,
-                title: "Snaptube Pro",
-                category: "Entertainment",
-                desc: "সব ফরম্যাটের এইচডি ভিডিও প্লেয়ার। এক অ্যাপেই অফলাইন ভিডিও দেখা ও ডাউনলোডের সেরা মাধ্যম।",
-                downloadUrl: "https://www.mediafire.com/file/84mhbfw3ezxx6b5/Snaptube_M0D_v4.apk/file",
-                gradient: "icon-gradient-1"
-            }
+            { id: 1, title: "Subway Surfers", category: "Games", desc: "অন্তহীন দৌড়ের গেম। ট্রেন এড়িয়ে স্কোর করুন।", downloadUrl: "https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf", gradient: "linear-gradient(135deg, #ff6b6b, #ee5a24)" },
+            { id: 2, title: "Candy Crush", category: "Games", desc: "পাজল গেম। ক্যান্ডি ম্যাচ করুন।", downloadUrl: "https://play.google.com/store/apps/details?id=com.king.candycrushsaga", gradient: "linear-gradient(135deg, #f9ca24, #f0932b)" },
+            { id: 3, title: "Free Fire", category: "Games", desc: "অ্যাকশন ব্যাটল রয়্যাল গেম।", downloadUrl: "https://play.google.com/store/apps/details?id=com.dts.freefireth", gradient: "linear-gradient(135deg, #eb4d4b, #6ab04c)" },
+            { id: 4, title: "WhatsApp", category: "Social", desc: "মেসেজিং ও কল করার অ্যাপ।", downloadUrl: "https://play.google.com/store/apps/details?id=com.whatsapp", gradient: "linear-gradient(135deg, #25D366, #128C7E)" },
+            { id: 5, title: "Instagram", category: "Social", desc: "ফটো ও ভিডিও শেয়ার করুন।", downloadUrl: "https://play.google.com/store/apps/details?id=com.instagram.android", gradient: "linear-gradient(135deg, #f09433, #dc2743, #bc1888)" },
+            { id: 6, title: "Spotify", category: "Entertainment", desc: "গান শোনার সেরা অ্যাপ।", downloadUrl: "https://play.google.com/store/apps/details?id=com.spotify.music", gradient: "linear-gradient(135deg, #1DB954, #191414)" },
+            { id: 7, title: "YouTube", category: "Entertainment", desc: "ভিডিও দেখার প্ল্যাটফর্ম।", downloadUrl: "https://play.google.com/store/apps/details?id=com.google.android.youtube", gradient: "linear-gradient(135deg, #FF0000, #cc0000)" },
+            { id: 8, title: "Duolingo", category: "Education", desc: "ভাষা শেখার অ্যাপ।", downloadUrl: "https://play.google.com/store/apps/details?id=com.duolingo", gradient: "linear-gradient(135deg, #58CC02, #4B9B00)" },
+            { id: 9, title: "Gallery App", category: "Tools", desc: "ছবি দেখুন ও এডিট করুন।", downloadUrl: "https://www.mediafire.com/file/ts5x91z64w0zu2k/Gallery.apk/file", gradient: "linear-gradient(135deg, #4facfe, #00f2fe)" },
+            { id: 10, title: "Snaptube Pro", category: "Entertainment", desc: "ভিডিও ডাউনলোডার ও প্লেয়ার।", downloadUrl: "https://www.mediafire.com/file/84mhbfw3ezxx6b5/Snaptube_M0D_v4.apk/file", gradient: "linear-gradient(135deg, #f093fb, #f5576c)" },
+            { id: 11, title: "Telegram", category: "Social", desc: "নিরাপদ মেসেজিং অ্যাপ।", downloadUrl: "https://play.google.com/store/apps/details?id=org.telegram.messenger", gradient: "linear-gradient(135deg, #0088cc, #2a9fd6)" },
+            { id: 12, title: "PLAYit PRO", category: "Tools", desc: "অল-ইন-ওয়ান ভিডিও প্লেয়ার।", downloadUrl: "https://www.mediafire.com/file/y44c06w824rl2i3/PLAYit_PRO.apk/file", gradient: "linear-gradient(135deg, #6c5ce7, #a29bfe)" }
         ];
 
-        // =====================================================
-        // 🛠️ এই অংশ পরিবর্তন করার দরকার নেই
-        // =====================================================
-        const appContainer = document.getElementById('appContainer');
+        // ============================================================
+        // 🛠️ X9 রেন্ডার ফাংশন
+        // ============================================================
+        const container = document.getElementById('appContainer');
         const searchBar = document.getElementById('searchBar');
-        const totalAppsSpan = document.getElementById('totalApps');
+        const totalSpan = document.getElementById('totalApps');
 
         function getInitials(title) {
             return title.charAt(0).toUpperCase();
         }
 
         function displayApps(apps) {
-            appContainer.innerHTML = "";
-            totalAppsSpan.textContent = apps.length;
-            
-            if(apps.length === 0) {
-                appContainer.innerHTML = `
+            container.innerHTML = '';
+            totalSpan.textContent = apps.length;
+
+            if (apps.length === 0) {
+                container.innerHTML = `
                     <div class="col-span-full text-center py-12">
-                        <div class="text-6xl mb-4">🔍</div>
-                        <h3 class="text-xl font-semibold text-gray-600">কোনো অ্যাপ পাওয়া যায়নি!</h3>
-                        <p class="text-gray-400 mt-2">অন্য কোনো নাম দিয়ে খুঁজুন</p>
+                        <p class="text-gray-500">🔍 X9 এ কোন অ্যাপ পাওয়া যায়নি</p>
                     </div>
                 `;
                 return;
             }
-            
-            apps.forEach(app => {
+
+            apps.forEach((app, index) => {
                 const initial = getInitials(app.title);
-                const appCard = `
-                    <div onclick="openModal(${app.id})" class="app-card bg-white p-4 rounded-2xl shadow-md hover:shadow-xl cursor-pointer flex flex-col items-center text-center">
-                        <div class="w-20 h-20 rounded-2xl flex items-center justify-center shadow-md ${app.gradient}">
-                            <span class="icon-text">${initial}</span>
+                const card = `
+                    <div onclick="openModal(${app.id})" class="app-card" style="animation-delay: ${index * 0.05}s">
+                        <div class="app-icon-wrapper" style="background: ${app.gradient};">
+                            ${initial}
                         </div>
-                        <h2 class="font-bold text-gray-800 text-sm md:text-base mt-3 line-clamp-1 w-full">${app.title}</h2>
-                        <span class="text-xs text-gray-400 mt-1 bg-gray-100 px-3 py-1 rounded-full">${app.category}</span>
+                        <h3 class="font-semibold text-white text-sm mt-3 truncate">${app.title}</h3>
+                        <span class="text-[10px] text-gray-500 mt-1 bg-white/5 px-2 py-0.5 rounded-full">${app.category}</span>
                     </div>
                 `;
-                appContainer.innerHTML += appCard;
+                container.innerHTML += card;
             });
         }
 
-        searchBar.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase().trim();
-            if(searchTerm === '') {
-                displayApps(appsData);
-            } else {
-                const filteredApps = appsData.filter(app => 
-                    app.title.toLowerCase().includes(searchTerm) ||
-                    app.category.toLowerCase().includes(searchTerm)
-                );
-                displayApps(filteredApps);
-            }
+        // ============================================================
+        // 🔍 X9 সার্চ ও ফিল্টার
+        // ============================================================
+        searchBar.addEventListener('input', function() {
+            const term = this.value.toLowerCase().trim();
+            const filtered = term === '' ? appsData : appsData.filter(a =>
+                a.title.toLowerCase().includes(term) ||
+                a.category.toLowerCase().includes(term)
+            );
+            displayApps(filtered);
         });
 
         function filterCategory(category) {
-            if(category === 'All') {
-                displayApps(appsData);
-                searchBar.value = '';
-            } else {
-                const filteredApps = appsData.filter(app => app.category === category);
-                displayApps(filteredApps);
-                searchBar.value = '';
-            }
+            searchBar.value = '';
+            const filtered = category === 'All' ? appsData : appsData.filter(a => a.category === category);
+            displayApps(filtered);
         }
 
+        // ============================================================
+        // 🖼️ X9 মডাল
+        // ============================================================
         function openModal(id) {
             const app = appsData.find(a => a.id === id);
-            if(!app) return;
+            if (!app) return;
 
-            document.getElementById('modalTitle').innerText = app.title;
-            document.getElementById('modalCategory').innerText = `📂 ${app.category}`;
-            document.getElementById('modalDesc').innerText = app.desc;
+            document.getElementById('modalTitle').textContent = app.title;
+            document.getElementById('modalCategory').textContent = `📂 ${app.category}`;
+            document.getElementById('modalDesc').textContent = app.desc;
             document.getElementById('modalDownload').href = app.downloadUrl;
-            
-            const iconContainer = document.getElementById('modalIconContainer');
-            iconContainer.className = `w-24 h-24 rounded-2xl shadow-xl flex items-center justify-center border-4 border-white ${app.gradient}`;
-            document.getElementById('modalIconText').innerText = getInitials(app.title);
+
+            const icon = document.getElementById('modalIconContainer');
+            icon.style.background = app.gradient;
+            document.getElementById('modalIconText').textContent = getInitials(app.title);
 
             document.getElementById('appModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -412,14 +418,19 @@
         }
 
         document.getElementById('appModal').addEventListener('click', function(e) {
-            if(e.target === this) closeModal();
+            if (e.target === this) closeModal();
         });
 
         document.addEventListener('keydown', function(e) {
-            if(e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') closeModal();
         });
 
+        // ============================================================
+        // ▶️ X9 শুরু
+        // ============================================================
         displayApps(appsData);
+
+        console.log('⚡ X9 Aploid Store লোড হয়েছে!');
     </script>
 
 </body>
